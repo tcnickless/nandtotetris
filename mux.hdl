@@ -1,0 +1,25 @@
+/** 
+ * Multiplexor:
+ * if (sel = 0) out = a, else out = b
+ */
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    // step 1: get the inversion of the selector
+    Not(in=sel, out=notsel);
+
+    // step 2: compare each input against a different selector value
+    /*   input A is input 0, so we assume true if selector is 0
+     *   we NOT the selector to assume 0 as true
+     */
+    And(a=a, b=notsel, out=tmp1);
+    /*   input B is input 1, so we assume true if selector is 1
+     *   no need to invert as regular truth value applies
+     */
+    And(a=b, b=sel, out=tmp2);
+
+    // step 3: we OR the new values
+    Or(a=tmp1, b=tmp2, out=out);
+}

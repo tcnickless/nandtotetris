@@ -1,0 +1,19 @@
+/**
+ * Exclusive-or gate:
+ * if ((a and Not(b)) or (Not(a) and b)) out = 1, else out = 0
+ */
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    // XOR, for this we must remove both 00 and 11 cases
+    // Or removes the 00 case
+    // we can simply flip the 11 case using NAND to remove it
+    // as we now have a guaranteed fail on either 11 or 00
+    // we can now combine using AND, to create the XOR
+    PARTS:
+    //// Replace this comment with your code.
+    Or(a=a, b=b, out=tmp1);
+    Nand(a=a, b=b, out=tmp2);
+    And(a=tmp1, b=tmp2, out=out);
+}

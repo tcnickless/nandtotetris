@@ -1,0 +1,17 @@
+/**
+ * Or gate:
+ * if (a or b) out = 1, else out = 0 
+ */
+CHIP Or {
+    IN a, b;
+    OUT out;
+
+    // OR is NAND with the 00 and 11 inputs reversed
+    // the inversions of 01 and 10 are not relevant
+    // we invert the end result by simply inverting all inputs
+    PARTS:
+    // Not is composed of a single input into a NAND
+    Not(in=a, out=tmp1); // Nand(a=a, b=a, out=out1);
+    Not(in=b, out=tmp2); // Nand(a=b, b=b, out=out2);
+    Nand(a=tmp1, b=tmp2, out=out);
+}
