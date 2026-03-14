@@ -1,0 +1,19 @@
+/**
+ * Demultiplexor:
+ * [a, b] = [in, 0] if sel = 0
+ *          [0, in] if sel = 1
+ */
+CHIP DMux {
+    IN in, sel;
+    OUT a, b;
+
+    PARTS:
+    // inverted selector to choose stream
+    Not(in=sel, out=notsel);
+
+    // send the AND directly to respective out
+    // we're copying the input onto the selected path
+    // out A = 0, out B = 1
+    And(a=in, b=notsel, out=a);
+    And(a=in, b=sel, out=b);
+}

@@ -1,0 +1,19 @@
+/**
+ * 4-way demultiplexor:
+ * [a, b, c, d] = [in, 0, 0, 0] if sel = 00
+ *                [0, in, 0, 0] if sel = 01
+ *                [0, 0, in, 0] if sel = 10
+ *                [0, 0, 0, in] if sel = 11
+ */
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // split in halves, 
+    DMux(in=in, sel=sel[0], a=half1, b=half2);
+    // a and c together as sel[0] is what differentiates them
+    DMux(in=half1, sel=sel[1], a=a, b=c);
+    // b and d together as sel[1] differentiates them
+    DMux(in=half2, sel=sel[1], a=b, b=d);
+}
